@@ -25,9 +25,9 @@ CREATE TABLE Location(
 CREATE TABLE Employee(
 	Employee_ID				TINYINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Full_name  				VARCHAR (45) NOT NULL,
-    Email					VARCHAR (45) NOT NULL,
-    Location_ID				TINYINT UNSIGNED NOT NULL,
-    FOREIGN KEY(Location_ID) REFERENCES Location(Location_ID)
+    Email					VARCHAR (45) UNIQUE NOT NULL,
+    Location_ID				TINYINT UNSIGNED NULL,
+    FOREIGN KEY(Location_ID) REFERENCES Location(Location_ID) ON DELETE SET NULL
 );
 
 -- INSERT DATA 
@@ -54,7 +54,7 @@ INSERT INTO Employee				(Full_name				, Email						, Location_ID	)
 VALUES 								('Bui Tien Dung'		, 'nn01@gmail.com'			, 1				),
 									('Tran Quoc Toan'		, 'nn02@gmail.com'			, 2				),
 									('Le Thanh Nghi'		, 'nn03@gmail.com' 			, 2				),
-									('Daniel Nguyen'		, 'nn04@gmail.com'			, 4			); 	
+									('Daniel Nguyen'		, 'nn04@gmail.com'			, 4				); 	
                                     
 -- Question 2
 -- A. Lấy tất cả các nhân viên thuộc Việt nam
@@ -92,7 +92,7 @@ ORDER BY			l.Location_ID ASC);
                                             
 -- Question 3. Tạo trigger cho table Employee chỉ cho phép insert mỗi quốc gia có tối đa 10 employee
 
-DROP TRIGGER IF EXISTS Question3;
+DROP TRIGGER IF EXISTS Max_employee;
 DELIMITER $$
 
 CREATE TRIGGER Max_employee BEFORE INSERT 
@@ -101,17 +101,28 @@ FOR EACH ROW
 
 BEGIN
 	
-    IF NEW.Country_ID IN ( 	SELECT Country_ID
+    IF Country_ID IN ( 	SELECT Country_ID
 							FROM
 							(	SELECT 		Country_ID, COUNT(Country_ID) 
 								FROM 		Country 
 								GROUP BY 	Country_ID
 								HAVING 		COUNT(Country_ID)= 10) t1 )
     Then	
-    signal sqlstate '12345'
+    signal sqlstate '45000'
     Set message_text = 'Max 10 employee in each Country';
     END IF;
 End$$
 
 DELIMITER //
 
+-- Question 4. Hãy cấu hình table sao cho khi xóa 1 location nào đó thì tất cả employee ở location đó sẽ có location_id = null
+
+DELETE FROM Location
+WHERE		Location_ID = 2;
+
+SELECT 		* 
+FROM		Location;
+
+SELECT 		* 
+FROM		Employee;
+	

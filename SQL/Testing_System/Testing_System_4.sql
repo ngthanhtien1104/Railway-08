@@ -25,6 +25,12 @@ WHERE 		p.PositionID = 1;
 
 -- Question 4: Viết lệnh để lấy ra danh sách các phòng ban có > 3 nhân viên
 
+SELECT 		D.DepartmentID, D.DepartmentName, COUNT(A.DepartmentID) AS 'SO LUONG'
+FROM 		`Account` A 
+INNER JOIN 	Department  D ON D.DepartmentID = A.DepartmentID
+GROUP BY 	A.DepartmentID
+HAVING 		COUNT(A.DepartmentID) < 3;
+
 -- Question 5: Viết lệnh để lấy ra danh sách câu hỏi được sử dụng trong đề thi nhiều nhất
 
 SELECT  * FROM exam;

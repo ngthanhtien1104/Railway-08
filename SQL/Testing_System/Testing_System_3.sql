@@ -279,7 +279,7 @@ LIMIT 		5;
 
 SELECT 		COUNT(AccountID)
 FROM 		`account`
-WHERE		department = 2;
+WHERE		departmentID = 2;
 
 -- Question 11: Lấy ra nhân viên có tên bắt đầu bằng chữ "D" và kết thúc bằng chữ "o"
 
@@ -289,13 +289,13 @@ WHERE		Fullname like "D%" "%O";
 
 -- Question 12: Xóa tất cả các exam được tạo trước ngày 20/12/2019
 
-DELETE 		exam
-FROM 		exam
-WHERE 		Creatdate < 20/12/2019;
+DELETE FROM 	exam
+WHERE 			Creatdate < 20/12/2019;
 
 -- Question 13: Xóa tất cả các question có nội dung bắt đầu bằng từ "câu hỏi"
 
-
+DELETE FROM		question
+WHERE			Content like "câu hỏi%";
 
 
 
